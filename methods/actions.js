@@ -4,7 +4,7 @@ var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
 var DOMAIN = 'sandboxb25e2fc7cf984723b32c0fec7547984e.mailgun.org'
 var mg = mailgun({apiKey: '3fc8dfdd8323144c34284eb76b5d5ba1-d32d817f-2f5bf026', domain: DOMAIN})
-
+var lodash = require('lodash')
 var functions = {
     addNew: function (req, res) {
         if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
@@ -89,15 +89,49 @@ var functions = {
             return res.json({success: false, msg: 'No Headers'})
         }
     },
-    // forgetpassword: function (req, res) {
-    //     const {email} = req.body
+    forgetpassword: function(req, res) {
+        console.log(req.body.email)
+        User.findOne({
+            email: req.body.email
+        }, function(err, user) {
+            if (err || !user) {
+                return res.status(400).send({
+                    success: false,
+                    msg: 'Email does not existed!'
+                })
+            }
+            var OTP = Math.floor(1000 + Math.random() * 9000)
+            const data = {
+                from: 'noreply@hello.com',
+                to: 'huynhthanhnha24111999@gmail.com',
+                subject: 'Hello',
+                text: `OTP: ${OTP}`
+            }
+    
+            return user.updateOne({
+                email: req.body.email
+            }, function (err, success){
+                if (err) {
+                    res.status(400).json({
+                        error: 'Forget password failed'
+                    })
+                } else {
+                    mg.messages().send(data, function (err, body) {
+                        if (err) {
+                            return res.json({
+                                error: err.messages
+                            })
+                        }
+                        return res.json({
+                            messages: 'Message has been sent Email'
+                        })
+                    })
+    
+                }
+            })
+        })
+    }
 
-    //     User.findOne({email}, (err, user){
-    //         if(err || !user){
-    //             return res.status(400).json({error: "User doesn't existed!"})
-    //         }
-    //     })
-    // }
-}
+    }
 
 module.exports = functions
