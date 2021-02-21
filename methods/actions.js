@@ -123,7 +123,8 @@ var functions = {
                             })
                         }
                         return res.json({
-                            messages: 'Message has been sent Email'
+                            messages: 'Message has been sent Email',
+                            otp: OTP
                         })
                     })
     
