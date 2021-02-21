@@ -5,6 +5,7 @@ var config = require('../config/dbconfig')
 var functions = {
     addNew: function (req, res) {
         if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
+            console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
@@ -13,7 +14,7 @@ var functions = {
                 password: req.body.password,
                 name: req.body.name,
                 phone: req.body.phone
-            });
+            })
             newUser.save(function (err, newUser) {
                 if (err) {
                     res.json({success: false, msg: 'Failed to save'})

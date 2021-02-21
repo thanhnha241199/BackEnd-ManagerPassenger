@@ -18,6 +18,7 @@ var userSchema = new Schema({
     phone: {
         type: String,
         require: true,
+        unique: true,
         maxlength: 10
     }
 })
