@@ -5,6 +5,7 @@ var mailgun = require("mailgun-js")
 var DOMAIN = 'sandboxb25e2fc7cf984723b32c0fec7547984e.mailgun.org'
 var mg = mailgun({apiKey: '3fc8dfdd8323144c34284eb76b5d5ba1-d32d817f-2f5bf026', domain: DOMAIN})
 var lodash = require('lodash')
+var bcrypt = require('bcrypt')
 var functions = {
     addNew: function (req, res) {
         if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
@@ -131,6 +132,23 @@ var functions = {
                 }
             })
         })
+    },
+    changepassword: function(req, res) {
+        var password = req.body.password
+        var salt = bcrypt.genSaltSync(10)
+        var hash = bcrypt.hashSync(password, salt)
+        var query = {'email': req.body.email};
+        User.findOneAndUpdate(query, { password: hash}, {upsert: true}, function(err, doc) {
+            if (err) return res.send(500, {error: err});
+            doc.save(function (err, newUser) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        });
     }
 
     }

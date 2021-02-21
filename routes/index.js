@@ -14,6 +14,7 @@ router.get('/dashboard', (req, res) => {
 router.post('/adduser', actions.addNew)
 router.post('/confirm', actions.confirm)
 router.post('/forgetpass', actions.forgetpassword)
+router.post('/changepass', actions.changepassword)
 
 router.post('/authenticate', actions.authenticate)
 
