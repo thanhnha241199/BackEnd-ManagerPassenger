@@ -12,31 +12,49 @@ var functions = {
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
-            var OTP = Math.floor(1000 + Math.random() * 9000)
-            const data = {
-                from: 'noreply@hello.com',
-                to: 'huynhthanhnha24111999@gmail.com',
-                subject: 'Hello',
-                text: `OTP: ${OTP}`
-            };
-            mg.messages().send(data, function (error, body) {
-                res.json({success: true, msg: 'Successfully saved', otp: OTP})
-            });
-            // var newUser = User({
-            //     email: req.body.email,
-            //     password: req.body.password,
-            //     name: req.body.name,
-            //     phone: req.body.phone
-            // })
-            // newUser.save(function (err, newUser) {
-            //     if (err) {
-            //         res.json({success: false, msg: 'Failed to save'})
-            //     }
-            //     else {
-            //         res.json({success: true, msg: 'Successfully saved'})
-            //     }
-            // })
+            var newUser = User({
+                email: req.body.email,
+                password: req.body.password,
+                name: req.body.name,
+                phone: req.body.phone
+            })
+            newUser.save(function (err, newUser) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
         }
+    },
+    confirm: function (req, res) {
+        if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            User.findOne({
+                email: req.body.email
+            }, function (err, user) {
+                    if (err) throw err
+                    if (!user) {
+                        var OTP = Math.floor(1000 + Math.random() * 9000)
+                        const data = {
+                            from: 'noreply@hello.com',
+                            to: 'huynhthanhnha24111999@gmail.com',
+                            subject: 'Hello',
+                            text: `OTP: ${OTP}`
+                        }
+                        mg.messages().send(data, function (error, body) {
+                            res.json({success: true, msg: 'Confirm Successfully', otp: OTP})
+                        })
+                    }
+                    else {
+                            return res.status(400).send({success: false, msg: 'Email existed!'})
+                        }
+                    })
+            }
     },
     authenticate: function (req, res) {
         User.findOne({
