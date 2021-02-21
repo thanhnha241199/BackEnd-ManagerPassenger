@@ -13,7 +13,8 @@ var userSchema = new Schema({
     },
     name: {
         type: String,
-        require: true
+        require: true,
+        maxlength: 64
     },
     phone: {
         type: String,
@@ -21,7 +22,7 @@ var userSchema = new Schema({
         unique: true,
         maxlength: 10
     }
-})
+}, { timestamps:true })
 
 userSchema.pre('save', function (next) {
     var user = this;
