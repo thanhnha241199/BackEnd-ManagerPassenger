@@ -13,8 +13,10 @@ var userSchema = new Schema({
     },
     name: {
         type: String,
-        require: true,
         maxlength: 64
+    },
+    token: {
+        type: String,
     },
     phone: {
         type: String,

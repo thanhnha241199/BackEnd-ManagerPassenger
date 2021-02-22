@@ -70,6 +70,8 @@ var functions = {
                     user.comparePassword(req.body.password, function (err, isMatch) {
                         if (isMatch && !err) {
                             var token = jwt.encode(user, config.secret)
+                            user.token = token
+                            user.save()
                             res.json({success: true, token: token})
                         }
                         else {
@@ -120,10 +122,12 @@ var functions = {
                     mg.messages().send(data, function (err, body) {
                         if (err) {
                             return res.json({
+                                success: false,
                                 error: err.messages
                             })
                         }
                         return res.json({
+                            success: true,
                             messages: 'Message has been sent Email',
                             otp: OTP
                         })
@@ -133,22 +137,68 @@ var functions = {
             })
         })
     },
+    resetpassword: function(req, res) {
+        User.findOne({email: req.body.email},function(err, user){
+            if(err || !user){
+                res.json({success: false, msg: 'Email failed'})
+            }
+            else{
+                var password = req.body.password
+                bcrypt.genSalt(10, function(err, salt) {
+                bcrypt.hash(password, salt, function(err, hash) {
+                var query = {'email': req.body.email};
+                User.findOneAndUpdate(query, { password: hash}, {upsert: true}, function(err, doc) {
+                    if (err) return res.send(500, {error: err});
+                    doc.save(function (err, newPass) {
+                        if (err) {
+                            res.json({success: false, msg: 'Failed to save'})
+                        }
+                        else {
+                            res.json({success: true, msg: 'Successfully saved'})
+                        }
+                            })
+                        })
+                    })
+                })
+            }
+        })
+    },
     changepassword: function(req, res) {
-        var password = req.body.password
-        var salt = bcrypt.genSaltSync(10)
-        var hash = bcrypt.hashSync(password, salt)
-        var query = {'email': req.body.email};
-        User.findOneAndUpdate(query, { password: hash}, {upsert: true}, function(err, doc) {
-            if (err) return res.send(500, {error: err});
-            doc.save(function (err, newUser) {
-                if (err) {
-                    res.json({success: false, msg: 'Failed to save'})
+        User.findOne({
+            email: req.body.email
+        }, function (err, user) {
+                if (err) throw err
+                if (!user) {
+                    res.status(403).send({success: false, msg: 'Authentication Failed, User not found'})
                 }
                 else {
-                    res.json({success: true, msg: 'Successfully saved'})
+                    user.comparePassword(req.body.oldpassword, function (err, isMatch) {
+                        if (isMatch && !err) {
+                            var password = req.body.newpassword
+                            bcrypt.genSalt(10, function(err, salt) {
+                                bcrypt.hash(password, salt, function(err, hash) {
+                                var query = {'email': req.body.email};
+                                User.findOneAndUpdate(query, { password: hash}, {upsert: true}, function(err, doc) {
+                                    if (err) return res.send(500, {error: err});
+                                    doc.save(function (err, newPass) {
+                                        if (err) {
+                                            res.json({success: false, msg: 'Failed to save'})
+                                        }
+                                        else {
+                                            res.json({success: true, msg: 'Successfully saved'})
+                                        }
+                                            })
+                                        })
+                                    })
+                                })
+                        }
+                        else {
+                            return res.status(403).send({success: false, msg: 'Authentication failed, wrong password'})
+                        }
+                    })
                 }
-            })
-        });
+        }
+        )
     }
 
     }
