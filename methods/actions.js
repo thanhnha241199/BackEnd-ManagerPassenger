@@ -214,6 +214,20 @@ var functions = {
                 }
         }
         )
+    },
+    updateinfo: function(req, res){
+        var query = { _id: req.body._id}
+        User.findOneAndUpdate(query, { name: req.body.name, phone: req.body.phone,}, {upsert: true}, function(err, doc) {
+            if (err) return res.send(500, {error: err});
+            doc.save(function (err, newPass) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+                    })
+                })
     }
 
     }

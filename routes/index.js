@@ -16,6 +16,7 @@ router.post('/confirm', actions.confirm)
 router.post('/forgetpass', actions.forgetpassword)
 router.post('/resetpassword', actions.resetpassword)
 router.post('/changepassword', actions.changepassword)
+router.post('/updateinfor', actions.updateinfo)
 router.post('/authenticate', actions.authenticate)
 
 router.get('/getinfo', actions.getinfo)
