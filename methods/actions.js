@@ -264,6 +264,17 @@ var functions = {
             }
         })
     },
+    deleteaddress: function (req, res) {
+        Address.findByIdAndDelete( {_id: req.body.id}, function(err, address){
+            if(err || !address){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
+    },
     }
 
 module.exports = functions
