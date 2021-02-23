@@ -22,6 +22,6 @@ router.get('/getinfo', actions.getinfo)
 
 //Address
 router.post('/addaddress', actions.addAddress)
-router.get('/getaddress', actions.getaddress)
+router.post('/getaddress', actions.getaddress)
 
 module.exports = router
