@@ -10,7 +10,7 @@ router.get('/dashboard', (req, res) => {
     res.send('Dashboard')
 })
 
-
+//Users
 router.post('/adduser', actions.addNew)
 router.post('/confirm', actions.confirm)
 router.post('/forgetpass', actions.forgetpassword)
@@ -18,7 +18,10 @@ router.post('/resetpassword', actions.resetpassword)
 router.post('/changepassword', actions.changepassword)
 router.post('/updateinfor', actions.updateinfo)
 router.post('/authenticate', actions.authenticate)
-
 router.get('/getinfo', actions.getinfo)
+
+//Address
+router.post('/addaddress', actions.addAddress)
+
 
 module.exports = router

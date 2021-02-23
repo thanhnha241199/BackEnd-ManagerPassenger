@@ -1,4 +1,5 @@
 var User = require('../models/user')
+var Address = require('../models/address')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
@@ -228,8 +229,28 @@ var functions = {
                 }
                     })
                 })
-    }
-
+    },
+    addAddress: function (req, res) {
+        if ((!req.body.id) || (!req.body.title) || (!req.body.address)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newAddress = Address({
+                title: req.body.title,
+                address: req.body.address,
+                uid: req.body.id
+            })
+            newAddress.save(function (err, newUser) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
     }
 
 module.exports = functions
