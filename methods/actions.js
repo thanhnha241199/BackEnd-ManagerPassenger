@@ -253,10 +253,9 @@ var functions = {
         }
     },
     getaddress: function (req, res) {
+        var ids = [req.body.uid]
         Address.find({
-            'uid': { $in: [
-                req.body.uid
-            ]}
+            'uid': { $in: ids}
         }, function(err, address){
             if(err || !address){
                 res.status(403).send({success: false, msg: 'Not found'})
