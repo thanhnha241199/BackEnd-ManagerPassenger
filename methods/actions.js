@@ -8,6 +8,7 @@ var mg = mailgun({apiKey: '3fc8dfdd8323144c34284eb76b5d5ba1-d32d817f-2f5bf026', 
 var lodash = require('lodash')
 var bcrypt = require('bcrypt')
 const { use } = require('passport')
+var mongoose = require('mongoose')
 var functions = {
     addNew: function (req, res) {
         if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
@@ -250,6 +251,19 @@ var functions = {
                 }
             })
         }
+    },
+    getaddress: function (req, res) {
+        Address.find({
+            'uid': { $in: [
+                req.body.uid
+            ]}
+        }, function(err, address){
+            if(err || !address){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }else{
+                return res.json(address)
+            }
+        })
     },
     }
 
