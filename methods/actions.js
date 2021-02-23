@@ -264,6 +264,25 @@ var functions = {
             }
         })
     },
+    updateaddress: function (req, res) {
+        Address.findByIdAndUpdate( {_id: req.body.id},{title: req.body.title, address: req.body.address}, function(err, address){
+            if (err) return res.send(500, {error: err});
+            if(!address){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                address.save(function (err, newPass) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
+    },
     deleteaddress: function (req, res) {
         Address.findByIdAndDelete( {_id: req.body.id}, function(err, address){
             if(err || !address){

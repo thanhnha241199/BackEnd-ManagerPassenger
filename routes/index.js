@@ -23,6 +23,7 @@ router.get('/getinfo', actions.getinfo)
 //Address
 router.post('/addaddress', actions.addAddress)
 router.post('/getaddress', actions.getaddress)
+router.post('/updateaddress', actions.updateaddress)
 router.post('/deleteaddress', actions.deleteaddress)
 
 module.exports = router
