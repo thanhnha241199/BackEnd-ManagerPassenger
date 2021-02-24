@@ -100,6 +100,7 @@ var functions = {
                         name: user.name,
                         email: user.email,
                         phone: user.phone,
+                        image: user.image,
                         _id: user._id
                      })
                 }
