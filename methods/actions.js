@@ -356,7 +356,15 @@ var functions = {
             })
         }
     },
-    
+    getchedule: function (req, res) {
+        Schedule.findOne({idtour: req.body.idtour}, function(err, schedule){
+            if(err || !schedule){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }else{
+                return res.json(schedule)
+            }
+        })
+    },
     }
 
 module.exports = functions
