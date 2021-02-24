@@ -319,6 +319,15 @@ var functions = {
             })
         }
     },
+    gettourbus: function (req, res) {
+        Tourbus.find({}, function(err, tourbus){
+            if(err || !tourbus){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }else{
+                return res.json(tourbus)
+            }
+        })
+    },
 
     
     }
