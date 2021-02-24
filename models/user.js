@@ -15,6 +15,9 @@ var userSchema = new Schema({
         type: String,
         maxlength: 64
     },
+    image: {
+        type: String
+    },
     token: {
         type: String,
     },

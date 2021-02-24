@@ -219,7 +219,7 @@ var functions = {
     },
     updateinfo: function(req, res){
         var query = { _id: req.body._id}
-        User.findOneAndUpdate(query, { name: req.body.name, phone: req.body.phone,}, {upsert: true}, function(err, doc) {
+        User.findOneAndUpdate(query, { name: req.body.name, phone: req.body.phone, image: req.body.image}, {upsert: true}, function(err, doc) {
             if (err) return res.send(500, {error: err});
             doc.save(function (err, newPass) {
                 if (err) {
@@ -294,6 +294,7 @@ var functions = {
             }
         })
     },
+    
     }
 
 module.exports = functions
