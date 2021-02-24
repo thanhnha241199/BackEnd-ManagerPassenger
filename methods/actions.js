@@ -1,5 +1,6 @@
 var User = require('../models/user')
 var Address = require('../models/address')
+var Tourbus = require('../models/tourbus')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
@@ -295,6 +296,30 @@ var functions = {
             }
         })
     },
+    addtourbus: function (req, res) {
+        if ((!req.body.locationstart) || (!req.body.locationend) || (!req.body.time) || (!req.body.range)|| (!req.body.price)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newTourbus = Tourbus({
+                locationstart: req.body.locationstart,
+                locationend: req.body.locationend,
+                time: req.body.time,
+                range: req.body.range,
+                price: req.body.price
+            })
+            newTourbus.save(function (err, newtourbus) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
+
     
     }
 

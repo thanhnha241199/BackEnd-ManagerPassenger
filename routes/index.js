@@ -26,4 +26,9 @@ router.post('/getaddress', actions.getaddress)
 router.post('/updateaddress', actions.updateaddress)
 router.post('/deleteaddress', actions.deleteaddress)
 
+
+//Tourbus
+router.post('/addtourbus', actions.addtourbus)
+
+
 module.exports = router
