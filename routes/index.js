@@ -31,4 +31,9 @@ router.post('/deleteaddress', actions.deleteaddress)
 router.post('/addtourbus', actions.addtourbus)
 router.post('/gettourbus', actions.gettourbus)
 
+
+//Chedule
+router.post('/addschedule', actions.addchedule)
+
+
 module.exports = router

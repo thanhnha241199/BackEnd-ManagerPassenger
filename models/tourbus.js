@@ -5,7 +5,7 @@ var tourbusSchema = new Schema({
     locationstart: {
         type: String,
     },
-    locattionend: {
+    locationend: {
         type: String,
     },
     time: {

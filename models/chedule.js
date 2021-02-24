@@ -2,19 +2,23 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
 var scheduleSchema = new Schema({
-    locationstart: {
-        type: String,
-        require: true,
-        unique: true
-    },
-    locattionend: {
-        type: String,
-        require: true
-    },
     idtour: {
         type: String,
         require: true
     },
+    locationstart: {
+        type: String,
+    },
+    locationend: {
+        type: String,
+    },
+    schedule: [
+        {
+            time: { type: String },
+            location: { type: String,},
+            address: { type: String,},
+       },
+    ]
 }, { timestamps:true })
 
-module.exports = mongoose.model('Chedule/', addressSchema)
+module.exports = mongoose.model('Chedule', scheduleSchema)

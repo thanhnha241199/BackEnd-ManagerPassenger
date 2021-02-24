@@ -1,6 +1,7 @@
 var User = require('../models/user')
 var Address = require('../models/address')
 var Tourbus = require('../models/tourbus')
+var Schedule = require('../models/chedule')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
@@ -328,7 +329,33 @@ var functions = {
             }
         })
     },
-
+    addchedule: function (req, res) {
+        if ((!req.body.idtour) ||(!req.body.locationstart) || (!req.body.locationend) || (!req.body.schedule)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newSchedule = Schedule({
+                idtour: req.body.idtour,
+                locationstart: req.body.locationstart,
+                locationend: req.body.locationend,
+                schedule: 
+                    {
+                        time: req.body.schedule.time,
+                        location: req.body.schedule.location,
+                        address: req.body.schedule.address
+                    }  
+            })
+            newSchedule.save(function (err, newschedule) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
     
     }
 
