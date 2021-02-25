@@ -358,13 +358,23 @@ var functions = {
     },
     getschedule: function (req, res) {
         var id = req.query.idtour;
-        Schedule.findOne({idtour: id}, function(err, schedule){
-            if(err || !schedule){
-                res.status(403).send({success: false, msg: 'Not found'})
-            }else{
-                return res.json(schedule)
-            }
-        })
+        if(id){
+            Schedule.findOne({idtour: id}, function(err, schedule){
+                if(err || !schedule){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(schedule)
+                }
+            })
+        }else{
+            Schedule.find({}, function(err, schedule){
+                if(err || !schedule){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(schedule)
+                }
+            })
+        }
     },
     }
 
