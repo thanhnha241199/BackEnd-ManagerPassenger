@@ -11,14 +11,14 @@ var scheduleSchema = new Schema({
     },
     locationend: {
         type: String,
-    },
-    schedule: [
-        {
-            time: { type: String },
-            location: { type: String,},
-            address: { type: String,},
-       },
-    ]
+    }
+    // schedule: [
+    //     {
+    //         time: { type: String },
+    //         location: { type: String,},
+    //         address: { type: String,},
+    //    },
+    // ]
 }, { timestamps:true })
 
 module.exports = mongoose.model('Chedule', scheduleSchema)
