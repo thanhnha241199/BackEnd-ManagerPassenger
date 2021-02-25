@@ -29,11 +29,20 @@ router.post('/deleteaddress', actions.deleteaddress)
 
 //Tourbus
 router.post('/addtourbus', actions.addtourbus)
-router.post('/gettourbus', actions.gettourbus)
+router.get('/gettourbus', actions.gettourbus)
 
 
 //Chedule
 router.post('/addschedule', actions.addchedule)
 router.get('/getschedule', actions.getschedule)
+
+//PickupPoint
+router.post('/addpickup', actions.addpickup)
+router.get('/getpickup', actions.getpickup)
+
+
+//Seat
+router.post('/addseat', actions.addseat)
+// router.get('/getseat', actions.getseat)
 
 module.exports = router

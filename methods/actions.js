@@ -2,6 +2,8 @@ var User = require('../models/user')
 var Address = require('../models/address')
 var Tourbus = require('../models/tourbus')
 var Schedule = require('../models/chedule')
+var PickupPoint = require('../models/pickuppoint')
+var Seat = require('../models/seat')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
@@ -321,13 +323,31 @@ var functions = {
         }
     },
     gettourbus: function (req, res) {
-        Tourbus.find({}, function(err, tourbus){
-            if(err || !tourbus){
-                res.status(403).send({success: false, msg: 'Not found'})
-            }else{
-                return res.json(tourbus)
-            }
-        })
+        var id = req.query.id;
+        if(id){
+            Tourbus.find({_id: id}, function(err, tourbus){
+                if(err || !tourbus){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(tourbus)
+                }
+            })
+        }else{
+            Tourbus.find({}, function(err, tourbus){
+                if(err || !tourbus){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(tourbus)
+                }
+            })
+        }
+        // Tourbus.find({}, function(err, tourbus){
+        //     if(err || !tourbus){
+        //         res.status(403).send({success: false, msg: 'Not found'})
+        //     }else{
+        //         return res.json(tourbus)
+        //     }
+        // })
     },
     addchedule: function (req, res) {
         if ((!req.body.idtour) ||(!req.body.locationstart) || (!req.body.locationend) || (!req.body.schedule)) {
@@ -372,6 +392,69 @@ var functions = {
                     res.status(403).send({success: false, msg: 'Not found'})
                 }else{
                     return res.json(schedule)
+                }
+            })
+        }
+    },
+    addpickup: function (req, res) {
+        if ((!req.body.tourid) ||(!req.body.title) || (!req.body.address)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newPickupPoint = PickupPoint({
+                tourid: req.body.tourid,
+                title: req.body.title,
+                address: req.body.address,
+                time: req.body.time
+            })
+            newPickupPoint.save(function (err, newpickuppoint) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
+    getpickup: function (req, res) {
+        var id = req.query.tourid;
+        if(id){
+            PickupPoint.findOne({tourid: id}, function(err, pickuppoint){
+                if(err || !pickuppoint){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(pickuppoint)
+                }
+            })
+        }else{
+            PickupPoint.find({}, function(err, pickuppoint){
+                if(err || !pickuppoint){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(pickuppoint)
+                }
+            })
+        }
+    },
+    addseat: function (req, res) {
+        if ((!req.body.name) ||(!req.body.status) || (!req.body.quantity)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newSeat = Seat({
+                name: req.body.name,
+                status: req.body.status,
+                quantity: req.body.quantity
+            })
+            newSeat.save(function (err, newseat) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
                 }
             })
         }
