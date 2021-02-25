@@ -357,7 +357,8 @@ var functions = {
         }
     },
     getschedule: function (req, res) {
-        Schedule.findOne({idtour: req.body.idtour}, function(err, schedule){
+        var id = req.query.idtour;
+        Schedule.findOne({idtour: id}, function(err, schedule){
             if(err || !schedule){
                 res.status(403).send({success: false, msg: 'Not found'})
             }else{
