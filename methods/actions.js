@@ -341,13 +341,6 @@ var functions = {
                 }
             })
         }
-        // Tourbus.find({}, function(err, tourbus){
-        //     if(err || !tourbus){
-        //         res.status(403).send({success: false, msg: 'Not found'})
-        //     }else{
-        //         return res.json(tourbus)
-        //     }
-        // })
     },
     addchedule: function (req, res) {
         if ((!req.body.idtour) ||(!req.body.locationstart) || (!req.body.locationend) || (!req.body.schedule)) {
@@ -455,6 +448,26 @@ var functions = {
                 }
                 else {
                     res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
+    getseat: function (req, res) {
+        var id = req.query.id;
+        if(id){
+            Seat.findOne({_id: id}, function(err, seat){
+                if(err || !seat){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(seat)
+                }
+            })
+        }else{
+            Seat.find({}, function(err, seat){
+                if(err || !seat){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(seat)
                 }
             })
         }

@@ -43,6 +43,6 @@ router.get('/getpickup', actions.getpickup)
 
 //Seat
 router.post('/addseat', actions.addseat)
-// router.get('/getseat', actions.getseat)
+router.get('/getseat', actions.getseat)
 
 module.exports = router
