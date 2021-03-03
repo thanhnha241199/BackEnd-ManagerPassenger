@@ -26,6 +26,10 @@ var userSchema = new Schema({
         require: true,
         unique: true,
         maxlength: 10
+    }, 
+    type: {
+        type: String,
+        require: true,
     }
 }, { timestamps:true })
 

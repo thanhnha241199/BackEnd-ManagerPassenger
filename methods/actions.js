@@ -15,7 +15,7 @@ const { use } = require('passport')
 var mongoose = require('mongoose')
 var functions = {
     addNew: function (req, res) {
-        if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
+        if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)|| (!req.body.type)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
@@ -24,7 +24,8 @@ var functions = {
                 email: req.body.email,
                 password: req.body.password,
                 name: req.body.name,
-                phone: req.body.phone
+                phone: req.body.phone,
+                type: req.body.type
             })
             newUser.save(function (err, newUser) {
                 if (err) {
@@ -79,7 +80,12 @@ var functions = {
                             var token = jwt.encode(user._id, config.secret)
                             user.token = token
                             user.save()
-                            res.json({success: true, token: token})
+                            res.json(
+                                {
+                                    success: true, 
+                                    token: token,
+                                    type: user.type
+                                })
                         }
                         else {
                             return res.status(403).send({success: false, msg: 'Authentication failed, wrong password'})
@@ -414,7 +420,7 @@ var functions = {
     getpickup: function (req, res) {
         var id = req.query.tourid;
         if(id){
-            PickupPoint.findOne({tourid: id}, function(err, pickuppoint){
+            PickupPoint.find({tourid: id}, function(err, pickuppoint){
                 if(err || !pickuppoint){
                     res.status(403).send({success: false, msg: 'Not found'})
                 }else{
