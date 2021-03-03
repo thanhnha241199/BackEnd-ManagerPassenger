@@ -84,7 +84,8 @@ var functions = {
                                 {
                                     success: true, 
                                     token: token,
-                                    type: user.type
+                                    type: user.type,
+                                    email: user.email
                                 })
                         }
                         else {
