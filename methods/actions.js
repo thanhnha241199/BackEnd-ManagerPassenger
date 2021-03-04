@@ -15,7 +15,7 @@ const { use } = require('passport')
 var mongoose = require('mongoose')
 var functions = {
     addNew: function (req, res) {
-        if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)|| (!req.body.type)) {
+        if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
@@ -25,7 +25,7 @@ var functions = {
                 password: req.body.password,
                 name: req.body.name,
                 phone: req.body.phone,
-                type: req.body.type
+                type: "1"
             })
             newUser.save(function (err, newUser) {
                 if (err) {
