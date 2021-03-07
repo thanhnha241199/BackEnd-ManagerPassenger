@@ -3,6 +3,7 @@ var Address = require('../models/address')
 var Tourbus = require('../models/tourbus')
 var Schedule = require('../models/chedule')
 var PickupPoint = require('../models/pickuppoint')
+var Order = require('../models/order')
 var Seat = require('../models/seat')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
@@ -471,6 +472,53 @@ var functions = {
             })
         }else{
             Seat.find({}, function(err, seat){
+                if(err || !seat){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(seat)
+                }
+            })
+        }
+    },
+    addorder: function (req, res) {
+        if ((!req.body.id) ||(!req.body.name) || (!req.body.email)||(!req.body.tour) || (!req.body.timetour)||(!req.body.quantity) || (!req.body.seat)||(!req.body.price) || (!req.body.totalprice)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newOrder = Order({
+                id: req.body.id,
+                name: req.body.name,
+                email: req.body.email,
+                tour: req.body.tour,
+                timetour: req.body.timetour,
+                quantity: req.body.quantity,
+                seat: req.body.seat,
+                price: req.body.price,
+                totalprice: req.body.totalprice
+            })
+            newOrder.save(function (err, neworder) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
+    getorder: function (req, res) {
+        var id = req.query.id;
+        if(id){
+            Order.findOne({_id: id}, function(err, seat){
+                if(err || !seat){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(seat)
+                }
+            })
+        }else{
+            Order.find({}, function(err, seat){
                 if(err || !seat){
                     res.status(403).send({success: false, msg: 'Not found'})
                 }else{

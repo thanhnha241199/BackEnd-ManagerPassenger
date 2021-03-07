@@ -45,4 +45,10 @@ router.get('/getpickup', actions.getpickup)
 router.post('/addseat', actions.addseat)
 router.get('/getseat', actions.getseat)
 
+
+//Order
+router.post('/addorder', actions.addorder)
+router.get('/getorder', actions.getorder)
+
+
 module.exports = router
