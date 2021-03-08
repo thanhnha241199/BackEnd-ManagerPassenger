@@ -266,16 +266,24 @@ var functions = {
         }
     },
     getaddress: function (req, res) {
-        var ids = [req.body.uid]
-        Address.find({
-            'uid': { $in: ids}
-        }, function(err, address){
-            if(err || !address){
-                res.status(403).send({success: false, msg: 'Not found'})
-            }else{
-                return res.json(address)
-            }
-        })
+        var id = req.query.uid;
+        if(id){
+            Address.find({uid: id}, function(err, address){
+                if(err || !address){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(address)
+                }
+            })
+        }else{
+            Address.find({}, function(err, address){
+                if(err || !address){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(address)
+                }
+            })
+        }
     },
     updateaddress: function (req, res) {
         Address.findByIdAndUpdate( {_id: req.body.id},{title: req.body.title, address: req.body.address}, function(err, address){
