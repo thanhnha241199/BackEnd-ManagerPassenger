@@ -495,7 +495,7 @@ var functions = {
         }
         else {
             var newOrder = Order({
-                id: req.body.id,
+                uid: req.body.id,
                 name: req.body.name,
                 email: req.body.email,
                 tour: req.body.tour,
