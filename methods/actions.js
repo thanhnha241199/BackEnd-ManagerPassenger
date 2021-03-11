@@ -535,6 +535,26 @@ var functions = {
             })
         }
     },
+    getuser: function (req, res) {
+        var id = req.query.id;
+        if(id){
+            User.findOne({_id: id}, function(err, user){
+                if(err || !user){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(user)
+                }
+            })
+        }else{
+            User.find({}, function(err, user){
+                if(err || !user){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(user)
+                }
+            })
+        }
+    },
     }
 
 module.exports = functions
