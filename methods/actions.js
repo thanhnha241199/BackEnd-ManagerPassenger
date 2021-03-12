@@ -26,6 +26,7 @@ var functions = {
                 password: req.body.password,
                 name: req.body.name,
                 phone: req.body.phone,
+                image:"",
                 type: "1"
             })
             newUser.save(function (err, newUser) {
