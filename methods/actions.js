@@ -39,6 +39,17 @@ var functions = {
             })
         }
     },
+    deleteNew: function (req, res) {
+        User.findByIdAndDelete( {_id: req.body.id}, function(err, user){
+            if(err || !user){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
+    },
     confirm: function (req, res) {
         if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
             console.log(req.body)
