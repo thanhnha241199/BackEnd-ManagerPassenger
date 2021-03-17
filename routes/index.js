@@ -14,6 +14,7 @@ router.get('/dashboard', (req, res) => {
 router.post('/adduser', actions.addNew)
 router.get('/getuser', actions.getuser)
 router.post('/deleteuser', actions.deleteNew)
+router.post('/updateuser', actions.updateuser)
 router.post('/confirm', actions.confirm)
 router.post('/forgetpass', actions.forgetpassword)
 router.post('/resetpassword', actions.resetpassword)
