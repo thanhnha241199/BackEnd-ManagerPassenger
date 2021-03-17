@@ -34,6 +34,7 @@ router.post('/deleteaddress', actions.deleteaddress)
 router.post('/addtourbus', actions.addtourbus)
 router.get('/gettourbus', actions.gettourbus)
 router.post('/updateticket', actions.updatetourbus)
+router.post('/deleteticket', actions.deletetourbus)
 
 //Chedule
 router.post('/addschedule', actions.addchedule)

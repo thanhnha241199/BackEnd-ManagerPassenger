@@ -386,6 +386,17 @@ var functions = {
             }
         })
     },
+    deletetourbus: function (req, res) {
+        Tourbus.findByIdAndDelete( {_id: req.body.id}, function(err, tourbus){
+            if(err || !tourbus){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
+    },
     gettourbus: function (req, res) {
         var id = req.query.id;
         if(id){
