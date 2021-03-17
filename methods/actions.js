@@ -259,7 +259,7 @@ var functions = {
                 })
     },
     updateuser: function(req, res){
-        var query = { _id: req.body._id}
+        var query = { _id: req.body.id}
         User.findOneAndUpdate(query, { name: req.body.name, phone: req.body.phone, email: req.body.email, type: req.body.type}, {upsert: true}, function(err, doc) {
             if (err) return res.send(500, {error: err});
             doc.save(function (err, newPass) {
