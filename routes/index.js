@@ -33,7 +33,7 @@ router.post('/deleteaddress', actions.deleteaddress)
 //Tourbus
 router.post('/addtourbus', actions.addtourbus)
 router.get('/gettourbus', actions.gettourbus)
-
+router.post('/updateticket', actions.updatetourbus)
 
 //Chedule
 router.post('/addschedule', actions.addchedule)

@@ -366,6 +366,26 @@ var functions = {
             })
         }
     },
+    updatetourbus: function (req, res) {
+        Tourbus.findByIdAndUpdate( {_id: req.body.id},{locationstart: req.body.locationstart, 
+            locationend: req.body.locationend,time: req.body.time, range: req.body.range, price: req.body.price}, function(err, tourbus){
+            if (err) return res.send(500, {error: err});
+            if(!tourbus){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                tourbus.save(function (err, tourbus) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
+    },
     gettourbus: function (req, res) {
         var id = req.query.id;
         if(id){
