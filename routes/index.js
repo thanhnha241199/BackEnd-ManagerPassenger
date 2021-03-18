@@ -58,4 +58,11 @@ router.post('/addorder', actions.addorder)
 router.get('/getorder', actions.getorder)
 
 
+//Car
+router.post('/addcar', actions.addCar)
+router.post('/deletecar', actions.deleteCar)
+router.post('/updatecar', actions.updateCar)
+router.get('/getcar', actions.getCar)
+
+
 module.exports = router

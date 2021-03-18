@@ -2,6 +2,7 @@ var User = require('../models/user')
 var Address = require('../models/address')
 var Tourbus = require('../models/tourbus')
 var Schedule = require('../models/chedule')
+var Car = require('../models/car')
 var PickupPoint = require('../models/pickuppoint')
 var Order = require('../models/order')
 var Seat = require('../models/seat')
@@ -644,6 +645,84 @@ var functions = {
                 }
             })
         }
+    },
+    addCar: function (req, res) {
+        if ((!req.body.driverid) || (!req.body.supportid) || (!req.body.tourid) || (!req.body.status)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newCar = Car({
+                driverid: req.body.driverid,
+                supportid: req.body.supportid,
+                tourid: req.body.tourid,
+                status: req.body.status,
+            })
+            newCar.save(function (err, newCar) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
+    getCar: function (req, res) {
+        var id = req.query.id;
+        if(id){
+            Car.findOne({_id: id}, function(err, car){
+                if(err || !car){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(car)
+                }
+            })
+        }else{
+            Car.find({}, function(err, car){
+                if(err || !car){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(car)
+                }
+            })
+        }
+    },
+    deleteCar: function (req, res) {
+        Car.findByIdAndDelete( {_id: req.body.id}, function(err, car){
+            if(err || !car){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
+    },
+    updateCar: function (req, res) {
+        Car.findByIdAndUpdate( {_id: req.body.id},
+            {
+                idtour: req.body.idtour,
+                driverid: req.body.driverid, 
+                supportid: req.body.supportid,
+                status: req.body.status
+            }, function(err, car){
+            if (err) return res.send(500, {error: err});
+            if(!car){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                car.save(function (err, car) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
     },
     }
 
