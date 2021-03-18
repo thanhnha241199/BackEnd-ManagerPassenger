@@ -427,12 +427,7 @@ var functions = {
                 idtour: req.body.idtour,
                 locationstart: req.body.locationstart,
                 locationend: req.body.locationend,
-                schedule: 
-                    {
-                        time: req.body.schedule.time,
-                        location: req.body.schedule.location,
-                        address: req.body.schedule.address
-                    }  
+                schedule: req.body.schedule
             })
             newSchedule.save(function (err, newschedule) {
                 if (err) {
@@ -443,6 +438,42 @@ var functions = {
                 }
             })
         }
+    },
+    updatechedule: function (req, res) {
+        Schedule.findByIdAndUpdate( {_id: req.body.id},
+            {
+                idtour: req.body.idtour,
+                locationstart: req.body.locationstart, 
+                locationend: req.body.locationend,
+                schedule: req.body.schedule
+            }, function(err, schedule){
+            if (err) return res.send(500, {error: err});
+            if(!schedule){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                schedule.save(function (err, schedule) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
+    },
+    deletechedule: function (req, res) {
+        Schedule.findByIdAndDelete( {_id: req.body.id}, function(err, schedule){
+            if(err || !schedule){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
     },
     getschedule: function (req, res) {
         var id = req.query.idtour;

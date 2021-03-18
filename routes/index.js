@@ -39,6 +39,9 @@ router.post('/deleteticket', actions.deletetourbus)
 //Chedule
 router.post('/addschedule', actions.addchedule)
 router.get('/getschedule', actions.getschedule)
+router.post('/updateschedule', actions.updatechedule)
+router.post('/deleteschedule', actions.deletechedule)
+
 
 //PickupPoint
 router.post('/addpickup', actions.addpickup)
