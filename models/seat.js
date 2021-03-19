@@ -2,14 +2,17 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
 var seatSchema = new Schema({
-    name: {
+    idtour: {
         type: String,
     },
-    status: {
+    idcar: {
         type: String,
     },
-    quantity: {
-        type: Number,
+    floors1: {
+        type: Array
+    },
+    floors2: {
+        type: Array
     }
 }, { timestamps:true })
 

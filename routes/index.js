@@ -52,7 +52,8 @@ router.post('/deletepickup', actions.deletePickUp)
 //Seat
 router.post('/addseat', actions.addseat)
 router.get('/getseat', actions.getseat)
-
+router.post('/deleteseat', actions.deleteseat)
+router.post('/updateseat', actions.updateseat)
 
 //Order
 router.post('/addorder', actions.addorder)

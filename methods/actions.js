@@ -573,15 +573,16 @@ var functions = {
         })
     },
     addseat: function (req, res) {
-        if ((!req.body.name) ||(!req.body.status) || (!req.body.quantity)) {
+        if ((!req.body.idtour) ||(!req.body.idcar) || (!req.body.floors1)|| (!req.body.floors2)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
             var newSeat = Seat({
-                name: req.body.name,
-                status: req.body.status,
-                quantity: req.body.quantity
+                idtour: req.body.idtour,
+                idcar: req.body.idcar,
+                floors1: req.body.floors1,
+                floors2: req.body.floors2
             })
             newSeat.save(function (err, newseat) {
                 if (err) {
@@ -592,6 +593,43 @@ var functions = {
                 }
             })
         }
+    },
+    updateseat: function (req, res) {
+        Seat.findByIdAndUpdate( {_id: req.body.id},
+            {
+                idtour: req.body.idtour,
+                idcar: req.body.idcar, 
+                time: req.body.time,
+                floors2: req.body.floors2,
+                floors1: req.body.floors1
+            }, function(err, seat){
+            if (err) return res.send(500, {error: err});
+            if(!seat){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                seat.save(function (err, seat) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
+    },
+    deleteseat: function (req, res) {
+        Seat.findByIdAndDelete( {_id: req.body.id}, function(err, seat){
+            if(err || !seat){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
     },
     getseat: function (req, res) {
         var id = req.query.id;
