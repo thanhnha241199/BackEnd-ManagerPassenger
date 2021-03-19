@@ -11,9 +11,9 @@ var pickuppointSchema = new Schema({
     tourid: {
         type: String
     },
-    time: [{
+    time:{
         type: Array
-    }]
+    }
 }, { timestamps:true })
 
 module.exports = mongoose.model('PickupPoint', pickuppointSchema)

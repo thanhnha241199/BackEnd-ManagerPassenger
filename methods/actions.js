@@ -497,14 +497,13 @@ var functions = {
         }
     },
     addpickup: function (req, res) {
-        if ((!req.body.tourid) ||(!req.body.title) || (!req.body.address)) {
+        if ((!req.body.tourid) ||(!req.body.time) || (!req.body.address)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
             var newPickupPoint = PickupPoint({
                 tourid: req.body.tourid,
-                title: req.body.title,
                 address: req.body.address,
                 time: req.body.time
             })
@@ -537,6 +536,41 @@ var functions = {
                 }
             })
         }
+    },
+    updatePickup: function (req, res) {
+        PickupPoint.findByIdAndUpdate( {_id: req.body.id},
+            {
+                idtour: req.body.idtour,
+                address: req.body.address, 
+                time: req.body.time
+            }, function(err, pickup){
+            if (err) return res.send(500, {error: err});
+            if(!pickup){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                pickup.save(function (err, pickup) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
+    },
+    deletePickUp: function (req, res) {
+        PickupPoint.findByIdAndDelete( {_id: req.body.id}, function(err, pickup){
+            if(err || !pickup){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
+            }
+        })
     },
     addseat: function (req, res) {
         if ((!req.body.name) ||(!req.body.status) || (!req.body.quantity)) {

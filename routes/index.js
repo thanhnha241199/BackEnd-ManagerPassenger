@@ -46,7 +46,8 @@ router.post('/deleteschedule', actions.deletechedule)
 //PickupPoint
 router.post('/addpickup', actions.addpickup)
 router.get('/getpickup', actions.getpickup)
-
+router.post('/updatepickup', actions.updatePickup)
+router.post('/deletepickup', actions.deletePickUp)
 
 //Seat
 router.post('/addseat', actions.addseat)
