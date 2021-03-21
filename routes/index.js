@@ -59,6 +59,12 @@ router.post('/updateseat', actions.updateseat)
 router.post('/addorder', actions.addorder)
 router.get('/getorder', actions.getorder)
 
+//Discount
+router.post('/adddiscount', actions.adddiscount)
+router.get('/getdiscount', actions.getdiscount)
+router.post('/updatediscount', actions.updatediscount)
+router.post('/deletediscount', actions.deletediscount)
+
 
 //Car
 router.post('/addcar', actions.addCar)

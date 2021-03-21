@@ -2,6 +2,7 @@ var User = require('../models/user')
 var Address = require('../models/address')
 var Tourbus = require('../models/tourbus')
 var Schedule = require('../models/chedule')
+var Discount = require('../models/discount')
 var Car = require('../models/car')
 var PickupPoint = require('../models/pickuppoint')
 var Order = require('../models/order')
@@ -793,6 +794,88 @@ var functions = {
                         res.json({success: true, msg: 'Successfully saved'})
                     }
                         })
+            }
+        })
+    },
+    getdiscount: function (req, res) {
+        var id = req.query.id;
+        if(id){
+            Discount.find({_id: id}, function(err, discount){
+                if(err || !tourbus){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(discount)
+                }
+            })
+        }else{
+            Discount.find({}, function(err, discount){
+                if(err || !discount){
+                    res.status(403).send({success: false, msg: 'Not found'})
+                }else{
+                    return res.json(discount)
+                }
+            })
+        }
+    },
+    adddiscount: function (req, res) {
+        if ((!req.body.title) ||(!req.body.sale) ||(!req.body.code) || (!req.body.description)) {
+            console.log(req.body)
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else {
+            var newDiscount = Discount({
+                title: req.body.title,
+                sale: req.body.sale,
+                timestart: req.body.timestart,
+                timeend: req.body.timeend,
+                code: req.body.code,
+                description: req.body.description
+            })
+            newDiscount.save(function (err, newDiscount) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
+    updatediscount: function (req, res) {
+        Discount.findByIdAndUpdate( {_id: req.body.id},
+            {
+                title: req.body.title,
+                sale: req.body.sale,
+                timestart: req.body.timestart,
+                timeend: req.body.timeend,
+                code: req.body.code,
+                description: req.body.description
+            }, function(err, discount){
+            if (err) return res.send(500, {error: err});
+            if(!discount){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                discount.save(function (err, scheddiscountule) {
+                    if (err) {
+                        res.json({success: false, msg: 'Failed to save'})
+                    }
+                    else {
+                        res.json({success: true, msg: 'Successfully saved'})
+                    }
+                        })
+            }
+        })
+    },
+    deletediscount: function (req, res) {
+        Discount.findByIdAndDelete( {_id: req.body.id}, function(err, discount){
+            if(err || !discount){
+                res.status(403).send({success: false, msg: 'Not found'})
+            }
+            else
+            {
+                return res.json({success: true, msg: 'success'})
             }
         })
     },
