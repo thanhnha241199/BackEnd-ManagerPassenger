@@ -65,6 +65,9 @@ router.get('/getdiscount', actions.getdiscount)
 router.post('/updatediscount', actions.updatediscount)
 router.post('/deletediscount', actions.deletediscount)
 
+//AddressModel
+router.get('/addressmodel', actions.addressmodel)
+
 
 //Car
 router.post('/addcar', actions.addCar)
