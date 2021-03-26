@@ -6,6 +6,7 @@ var Discount = require('../models/discount')
 var Car = require('../models/car')
 var PickupPoint = require('../models/pickuppoint')
 var Order = require('../models/order')
+var Rental = require('../models/rentalcar')
 var Seat = require('../models/seat')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
@@ -817,6 +818,7 @@ var functions = {
             })
         }
     },
+   
     adddiscount: function (req, res) {
         if ((!req.body.title) ||(!req.body.sale) ||(!req.body.code) || (!req.body.description)) {
             console.log(req.body)
@@ -879,6 +881,61 @@ var functions = {
             }
         })
     },
+    addrental: function (req, res) {
+      if ((!req.body.uid) ||(!req.body.name) ||(!req.body.email) || (!req.body.timestart)) {
+          console.log(req.body)
+          res.json({success: false, msg: 'Enter all fields'})
+      }
+      else {
+          var newRental= Rental({
+            uid: req.body.uid,
+            name: req.body.name,
+            email: req.body.email,
+            timestart: req.body.timestart,
+            timeend: req.body.timeend,
+            phone: req.body.phone,
+            note:req.body.note,
+            type:req.body.type,
+            quantityseat:req.body.quantityseat,
+            typecar:req.body.typecar,
+            seatcar:req.body.seatcar
+          })
+        
+          newRental.save(function (err, newDiscount) {
+              if (err) {
+                  res.json({success: false, msg: 'Failed to save'})
+              }
+              else {
+                  res.json({success: true, msg: 'Successfully saved'})
+              }
+          })
+      }
+    },
+    getrental: function (req, res) {
+      var id = req.query.id;
+      if(id){
+          Rental.findOne({_id: id}, function(err, rental){
+              if(err || !rental){
+                  res.status(403).send({success: false, msg: 'Not found'})
+              }else{
+                  return res.json(rental)
+              }
+          })
+      }else{
+          Rental.find({}, function(err, rental){
+              if(err || !rental){
+                  res.status(403).send({success: false, msg: 'Not found'})
+              }else{
+                  return res.json(rental)
+              }
+          })
+      }
+  },
+
+
+
+
+
     addressmodel: function (req, res) {
         return res.json([
             {
