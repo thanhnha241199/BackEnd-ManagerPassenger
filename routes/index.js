@@ -62,6 +62,8 @@ router.get('/getorder', actions.getorder)
 //Rental
 router.post('/addrental', actions.addrental)
 router.get('/getrental', actions.getrental)
+router.get('/getrentalorder', actions.getrentalorder)
+
 
 //Discount
 router.post('/adddiscount', actions.adddiscount)

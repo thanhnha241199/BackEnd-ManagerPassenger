@@ -930,12 +930,21 @@ var functions = {
               }
           })
       }
-  },
-
-
-
-
-
+    },
+    getrentalorder: function (req, res) {
+      var id = req.query.id;
+      if(id){
+          Rental.find({uid: id}, function(err, rental){
+              if(err || !rental){
+                  res.status(403).send({success: false, msg: 'Not found'})
+              }else{
+                  return res.json(rental)
+              }
+          })
+      }else{
+        res.status(403).send({success: false, msg: 'Not found'})
+      }
+    },
     addressmodel: function (req, res) {
         return res.json([
             {
