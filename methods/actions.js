@@ -932,7 +932,7 @@ var functions = {
       }
     },
     getrentalorder: function (req, res) {
-      var id = req.query.id;
+      var id = req.body.id;
       if(id){
           Rental.find({uid: id}, function(err, rental){
               if(err || !rental){
