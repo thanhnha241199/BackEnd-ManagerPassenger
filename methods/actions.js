@@ -11,7 +11,8 @@ var Seat = require('../models/seat')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
-var DOMAIN = 'sandboxb25e2fc7cf984723b32c0fec7547984e.mailgun.org'
+var nodemailer = require('nodemailer')
+var DOMAIN = 'https://api.mailgun.net/v3/sandboxb25e2fc7cf984723b32c0fec7547984e.mailgun.org'
 var mg = mailgun({apiKey: '3fc8dfdd8323144c34284eb76b5d5ba1-d32d817f-2f5bf026', domain: DOMAIN})
 var lodash = require('lodash')
 var bcrypt = require('bcrypt')
@@ -65,15 +66,38 @@ var functions = {
                     if (err) throw err
                     if (!user) {
                         var OTP = Math.floor(1000 + Math.random() * 9000)
-                        const data = {
-                            from: 'noreply@hello.com',
-                            to: req.body.email,
-                            subject: 'Hello',
-                            text: `OTP: ${OTP}`
-                        }
-                        mg.messages().send(data, function (error, body) {
+                        var transporter = nodemailer.createTransport({
+                          service: 'gmail',
+                          auth: {
+                            user: 'huynhthanhnha24111999@gmail.com',
+                            pass: '0989354429@#'
+                          }
+                        });
+                        
+                        var mailOptions = {
+                          from: 'huynhthanhnha24111999@gmail.com',
+                          to: req.body.email,
+                          subject: 'Welcome to App ManagerPassenger',
+                          text: `OTP: ${OTP}`
+                        };
+                        
+                        transporter.sendMail(mailOptions, function(error, info){
+                          if (error) {
+                            console.log(error);
+                          } else {
+                            console.log('Email sent: ' + info.response);
                             res.json({success: true, msg: 'Confirm Successfully', otp: OTP})
-                        })
+                          }
+                        });
+                        // const data = {
+                        //     from: 'noreply@hello.com',
+                        //     to: req.body.email,
+                        //     subject: 'Welcome to App ManagerPassenger',
+                        //     text: `OTP: ${OTP}`
+                        // }
+                        // mg.messages().send(data, function (error, body) {
+                        //     res.json({success: true, msg: 'Confirm Successfully', otp: OTP})
+                        // })
                     }
                     else {
                             return res.status(400).send({success: false, msg: 'Email existed!'})
