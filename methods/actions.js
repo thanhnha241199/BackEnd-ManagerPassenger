@@ -67,7 +67,7 @@ var functions = {
                         var OTP = Math.floor(1000 + Math.random() * 9000)
                         const data = {
                             from: 'noreply@hello.com',
-                            to: 'huynhthanhnha24111999@gmail.com',
+                            to: req.body.email,
                             subject: 'Hello',
                             text: `OTP: ${OTP}`
                         }
@@ -818,7 +818,6 @@ var functions = {
             })
         }
     },
-   
     adddiscount: function (req, res) {
         if ((!req.body.title) ||(!req.body.sale) ||(!req.body.code) || (!req.body.description)) {
             console.log(req.body)
