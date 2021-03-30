@@ -5,15 +5,12 @@ var userSchema = new Schema({
     email: {
         type: String,
         require: true,
-        unique: true
     },
     password: {
         type: String,
-        require: true
     },
     name: {
         type: String,
-        maxlength: 64
     },
     image: {
         type: String
@@ -27,7 +24,6 @@ var userSchema = new Schema({
     }, 
     type: {
         type: String,
-        require: true,
     }
 }, { timestamps:true })
 
