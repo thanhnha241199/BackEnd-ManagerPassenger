@@ -67,6 +67,7 @@ var functions = {
                     if (!user) {
                         var OTP = Math.floor(1000 + Math.random() * 9000)
                         var transporter = nodemailer.createTransport({
+                    
                           service: 'gmail',
                           auth: {
                             user: 'huynhthanhnha24111999@gmail.com',
@@ -75,7 +76,7 @@ var functions = {
                         });
                         
                         var mailOptions = { 
-                         from: 'huynhthanhnha24111999@gmail.com',
+                          from: 'ManagerPassenger ✔ <huynhthanhnha24111999@gmail.com>',
                           to: req.body.email,
                           subject: 'Welcome to App ManagerPassenger',
                           text: `OTP: ${OTP}`
