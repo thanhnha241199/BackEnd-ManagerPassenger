@@ -690,6 +690,7 @@ var functions = {
                 email: req.body.email,
                 phone: req.body.phone,
                 tour: req.body.tour,
+                location: req.body.location,
                 timetour: req.body.timetour,
                 quantity: req.body.quantity,
                 seat: req.body.seat,
