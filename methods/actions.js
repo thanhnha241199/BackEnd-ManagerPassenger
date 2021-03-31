@@ -679,15 +679,16 @@ var functions = {
         }
     },
     addorder: function (req, res) {
-        if ((!req.body.id) ||(!req.body.name) || (!req.body.email)||(!req.body.tour) || (!req.body.timetour)||(!req.body.quantity) || (!req.body.seat)||(!req.body.price) || (!req.body.totalprice)) {
+        if ((!req.body.uid) ||(!req.body.name) || (!req.body.email)||(!req.body.tour) || (!req.body.timetour)||(!req.body.quantity) || (!req.body.seat)||(!req.body.price) || (!req.body.totalprice)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
             var newOrder = Order({
-                uid: req.body.id,
+                uid: req.body.uid,
                 name: req.body.name,
                 email: req.body.email,
+                phone: req.body.phone,
                 tour: req.body.tour,
                 timetour: req.body.timetour,
                 quantity: req.body.quantity,

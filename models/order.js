@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
 var orderSchema = new Schema({
-    id: {
+    uid: {
         type: String
     },
     name: {
@@ -11,10 +11,16 @@ var orderSchema = new Schema({
     email: {
         type: String,
     },
+    phone: {
+        type: String,
+    },
     tour: {
         type: String,
     },
     timetour: {
+        type: String,
+    },
+    location: {
         type: String,
     },
     quantity: {
