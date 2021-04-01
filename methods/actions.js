@@ -7,6 +7,7 @@ var Car = require('../models/car')
 var PickupPoint = require('../models/pickuppoint')
 var Order = require('../models/order')
 var Rental = require('../models/rentalcar')
+var Card = require('../models/card')
 var Seat = require('../models/seat')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
@@ -522,6 +523,61 @@ var functions = {
                 }
             })
         }
+    },
+    getcard: function (req, res) {
+      var id = req.query.id;
+      if(id){
+          Card.find({uid: id}, function(err, card){
+              if(err || !card){
+                  res.status(403).send({success: false, msg: 'Not found'})
+              }else{
+                  return res.json(card)
+              }
+          })
+      }else{
+        Card.find({}, function(err, card){
+              if(err || !card){
+                  res.status(403).send({success: false, msg: 'Not found'})
+              }else{
+                  return res.json(card)
+              }
+          })
+      }
+    },
+    addcard: function (req, res) {
+      if ((!req.body.uid)||(!req.body.cardNumber) ||(!req.body.expiryDate) || (!req.body.cardHolderName)) {
+          console.log(req.body)
+          res.json({success: false, msg: 'Enter all fields'})
+      }
+      else {
+          var newCard = Card({
+            uid: req.body.uid,
+            cardNumber: req.body.cardNumber,
+            expiryDate: req.body.expiryDate,
+            cardHolderName: req.body.cardHolderName,
+            cvvCode: req.body.cvvCode,
+            showBackView: req.body.showBackView
+          })
+          newCard.save(function (err, newCard) {
+              if (err) {
+                  res.json({success: false, msg: 'Failed to save'})
+              }
+              else {
+                  res.json({success: true, msg: 'Successfully saved'})
+              }
+          })
+      }
+    },
+    deletecard: function (req, res) {
+      Card.findByIdAndDelete( {_id: req.body.id}, function(err, card){
+          if(err || !card){
+              res.status(403).send({success: false, msg: 'Not found'})
+          }
+          else
+          {
+              return res.json({success: true, msg: 'success'})
+          }
+      })
     },
     addpickup: function (req, res) {
         if ((!req.body.tourid) ||(!req.body.time) || (!req.body.address)) {
