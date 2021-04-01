@@ -58,7 +58,7 @@ router.post('/updateseat', actions.updateseat)
 //Order
 router.post('/addcard', actions.addcard)
 router.post('/deletecard', actions.deletecard)
-router.get('/getcard', actions.getcard)
+router.post('/getcard', actions.getcard)
 
 //Order
 router.post('/addorder', actions.addorder)

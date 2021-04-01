@@ -525,7 +525,7 @@ var functions = {
         }
     },
     getcard: function (req, res) {
-      var id = req.query.id;
+      var id = req.body.id;
       if(id){
           Card.find({uid: id}, function(err, card){
               if(err || !card){
@@ -535,13 +535,7 @@ var functions = {
               }
           })
       }else{
-        Card.find({}, function(err, card){
-              if(err || !card){
-                  res.status(403).send({success: false, msg: 'Not found'})
-              }else{
-                  return res.json(card)
-              }
-          })
+        res.status(403).send({success: false, msg: 'Not found'})
       }
     },
     addcard: function (req, res) {
