@@ -916,15 +916,16 @@ var functions = {
           var newRental= Rental({
             uid: req.body.uid,
             name: req.body.name,
+            phone: req.body.phone,
             email: req.body.email,
             timestart: req.body.timestart,
             timeend: req.body.timeend,
-            phone: req.body.phone,
-            note:req.body.note,
-            type:req.body.type,
+            locationstart: req.body.locationstart,
+            locationend: req.body.locationend,
             quantityseat:req.body.quantityseat,
+            quanticus: req.body.quanticus,
             typecar:req.body.typecar,
-            seatcar:req.body.seatcar
+            note:req.body.note
           })
         
           newRental.save(function (err, newDiscount) {

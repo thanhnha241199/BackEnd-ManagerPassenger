@@ -11,28 +11,31 @@ var rentalSchema = new Schema({
     email: {
         type: String,
     },
-    timestart: {
-        type: Date,
-    },
-    timeend: {
-        type: Date,
-    },
     phone: {
         type: String,
     },
-    note: {
+    timestart: {
         type: String,
     },
-    type: {
+    timeend: {
+        type: String,
+    },
+    locationstart: {
+        type: String,
+    },
+    locationend: {
         type: String,
     },
     quantityseat: {
         type: String,
     },
-    typecar: {
+    quanticus: {
         type: String,
     },
-    seatcar: {
+    type: {
+        type: String,
+    },
+    note: {
         type: String,
     },
 }, { timestamps:true })
