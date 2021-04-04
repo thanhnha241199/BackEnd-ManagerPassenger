@@ -31,7 +31,7 @@ var functions = {
                 password: req.body.password,
                 name: req.body.name,
                 phone: req.body.phone,
-                image:"",
+                image: "",
                 type: req.body.type
             })
             newUser.save(function (err, newUser) {
@@ -106,6 +106,31 @@ var functions = {
                         }
                     })
             }
+    },
+    sendorder: function (req, res) {
+      var transporter = nodemailer.createTransport({         
+        service: 'gmail',
+        auth: {
+          user: 'huynhthanhnha24111999@gmail.com',
+          pass: '0989354429@#'
+        }
+      });
+      
+      var mailOptions = { 
+        from: 'ManagerPassenger ✔ <huynhthanhnha24111999@gmail.com>',
+        to: req.body.email,
+        subject: 'Welcome to App ManagerPassenger',
+        text: "Order Success"
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.json({success: true, msg: 'Order Successfully'})
+        }
+      });
     },
     authenticate: function (req, res) {
         User.findOne({
