@@ -768,6 +768,8 @@ var functions = {
                 location: req.body.location,
                 timetour: req.body.timetour,
                 quantity: req.body.quantity,
+                status: req.body.status,
+                qr: req.body.qr,
                 seat: req.body.seat,
                 price: req.body.price,
                 totalprice: req.body.totalprice

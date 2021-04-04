@@ -20,6 +20,12 @@ var orderSchema = new Schema({
     timetour: {
         type: String,
     },
+    status: {
+        type: String,
+    },
+    qr: {
+        type: String,
+    },
     location: {
         type: String,
     },
