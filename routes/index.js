@@ -64,6 +64,7 @@ router.post('/getcard', actions.getcard)
 //Order
 router.post('/addorder', actions.addorder)
 router.get('/getorder', actions.getorder)
+router.get('/getorderuser', actions.getorderuser)
 
 //Rental
 router.post('/addrental', actions.addrental)
