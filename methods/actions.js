@@ -806,7 +806,7 @@ var functions = {
     },
     getorderuser: function (req, res) {
       var id = req.query.id;
-      Order.findOne({uid: id}, function(err, seat){
+      Order.find({uid: id}, function(err, seat){
               if(err || !seat){
                   res.status(403).send({success: false, msg: 'Not found'})
               }else{
