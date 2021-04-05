@@ -72,6 +72,10 @@ router.get('/getrental', actions.getrental)
 router.post('/getrentalorder', actions.getrentalorder)
 
 
+//Notification
+router.post('/addnoti', actions.addNoti)
+router.get('/getnoti', actions.getNoti)
+
 //Discount
 router.post('/adddiscount', actions.adddiscount)
 router.get('/getdiscount', actions.getdiscount)

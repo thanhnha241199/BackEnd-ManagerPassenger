@@ -7,6 +7,7 @@ var Car = require('../models/car')
 var PickupPoint = require('../models/pickuppoint')
 var Order = require('../models/order')
 var Rental = require('../models/rentalcar')
+var Notification = require('../models/notification')
 var Card = require('../models/card')
 var Seat = require('../models/seat')
 var jwt = require('jwt-simple')
@@ -366,6 +367,38 @@ var functions = {
                 }
             })
         }
+    },
+    addNoti: function (req, res) {
+      if ((!req.body.id) || (!req.body.title) || (!req.body.description)) {
+          console.log(req.body)
+          res.json({success: false, msg: 'Enter all fields'})
+      }
+      else {
+          var newNotification = Notification({
+              title: req.body.title,
+              description: req.body.description,
+              uid: req.body.id,
+              time: Date.now()
+          })
+          newNotification.save(function (err, newNotification) {
+              if (err) {
+                  res.json({success: false, msg: 'Failed to save'})
+              }
+              else {
+                  res.json({success: true, msg: 'Successfully saved'})
+              }
+          })
+      }
+    },
+    getNoti: function (req, res) {
+        var id = req.query.uid;
+        Notification.find({uid: id}, function(err, notification){
+              if(err || !notification){
+                  res.status(403).send({success: false, msg: 'Not found'})
+              }else{
+                  return res.json(notification)
+              }
+        })
     },
     updateaddress: function (req, res) {
         Address.findByIdAndUpdate( {_id: req.body.id},{title: req.body.title, address: req.body.address}, function(err, address){
@@ -814,7 +847,7 @@ var functions = {
               }
           })
     
-  },
+    },
     getuser: function (req, res) {
         var id = req.query.id;
         if(id){
