@@ -402,7 +402,7 @@ var functions = {
           "content_available" : true,
           "priority" : "high",
           "body": "Hello",
-          "title": req.query.id,
+          "title": "Test",
           "subtitle":"Elementary School"
          },
          "data" : {
