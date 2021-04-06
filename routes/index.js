@@ -75,6 +75,7 @@ router.post('/getrentalorder', actions.getrentalorder)
 //Notification
 router.post('/addnoti', actions.addNoti)
 router.get('/getnoti', actions.getNoti)
+router.get('/sendnoti', actions.sendNoti)
 
 //Discount
 router.post('/adddiscount', actions.adddiscount)

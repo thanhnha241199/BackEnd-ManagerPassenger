@@ -14,6 +14,7 @@ var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var mailgun = require("mailgun-js")
 var nodemailer = require('nodemailer')
+var FCM = require('fcm-node')
 var DOMAIN = 'https://api.mailgun.net/v3/sandboxb25e2fc7cf984723b32c0fec7547984e.mailgun.org'
 var mg = mailgun({apiKey: '3fc8dfdd8323144c34284eb76b5d5ba1-d32d817f-2f5bf026', domain: DOMAIN})
 var lodash = require('lodash')
@@ -389,6 +390,37 @@ var functions = {
               }
           })
       }
+    },
+    sendNoti: function (req, res) {
+      console.log(req.query.findByIdAndUpdate)
+      var fcm = new FCM("AAAASCcqYL8:APA91bGmLwvGdQER_HJBV0jNBwPB5227We20NoM5Q5Zw5XxFm0nyGUzAOHrDP0jesrJuQoz2S0lHZ3l0fPIpbPt43YiM068wX0J973QFBET_j6Sb2tRVOee7DMuRRbLF498ZfD-i0ajl"); 
+      var messageToSend = "Hi there this is message";
+      var message = {
+       to: req.query.token,
+       "notification": {
+          "OrganizationId":"2",
+          "content_available" : true,
+          "priority" : "high",
+          "body": "Hello",
+          "title": req.query.id,
+          "subtitle":"Elementary School"
+         },
+         "data" : {
+          "body" : "Body of Your Notification in Data",
+          "title": "Title of Your Notification in Title",
+          "key_1" : "Value for key_1",
+          "key_2" : "Value for key_2"
+      }
+      };
+      
+      fcm.send(message, function(err, response){
+          if (err) {
+              console.log("Something has gone wrong!", err);
+          } else {
+              console.log("Successfully sent with response: ", response.results);
+              res.send("Successfully sent")
+          }
+      });
     },
     getNoti: function (req, res) {
         var id = req.query.uid;
