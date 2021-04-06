@@ -398,7 +398,7 @@ var functions = {
       var message = {
        to: req.query.token,
        "notification": {
-          "OrganizationId":"2",
+        "sound" : "default",
           "content_available" : true,
           "priority" : "high",
           "body": "Hello",
