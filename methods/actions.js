@@ -835,6 +835,7 @@ var functions = {
                 quantity: req.body.quantity,
                 status: req.body.status,
                 qr: req.body.qr,
+                paymentType: req.body.paymentType,
                 seat: req.body.seat,
                 price: req.body.price,
                 totalprice: req.body.totalprice
