@@ -6,6 +6,7 @@ var Discount = require('../models/discount')
 var Car = require('../models/car')
 var PickupPoint = require('../models/pickuppoint')
 var Order = require('../models/order')
+var Review = require('../models/review')
 var Rental = require('../models/rentalcar')
 var Notification = require('../models/notification')
 var Card = require('../models/card')
@@ -34,7 +35,8 @@ var functions = {
                 name: req.body.name,
                 phone: req.body.phone,
                 image: "",
-                type: req.body.type
+                type: req.body.type,
+                active: req.body.active
             })
             newUser.save(function (err, newUser) {
                 if (err) {
@@ -70,7 +72,6 @@ var functions = {
                     if (!user) {
                         var OTP = Math.floor(1000 + Math.random() * 9000)
                         var transporter = nodemailer.createTransport({
-                    
                           service: 'gmail',
                           auth: {
                             user: 'huynhthanhnha24111999@gmail.com',
@@ -93,15 +94,6 @@ var functions = {
                             res.json({success: true, msg: 'Confirm Successfully', otp: OTP})
                           }
                         });
-                        // const data = {
-                        //     from: 'noreply@hello.com',
-                        //     to: req.body.email,
-                        //     subject: 'Welcome to App ManagerPassenger',
-                        //     text: `OTP: ${OTP}`
-                        // }
-                        // mg.messages().send(data, function (error, body) {
-                        //     res.json({success: true, msg: 'Confirm Successfully', otp: OTP})
-                        // })
                     }
                     else {
                             return res.status(400).send({success: false, msg: 'Email existed!'})
@@ -121,8 +113,8 @@ var functions = {
       var mailOptions = { 
         from: 'ManagerPassenger ✔ <huynhthanhnha24111999@gmail.com>',
         to: req.body.email,
-        subject: 'Welcome to App ManagerPassenger',
-        text: "Order Success"
+        subject: 'App ManagerPassenger',
+        text: "Chào bạn! Đơn hàng của bạn đã được thực hiện xong. Vui lòng vào ứng dụng để xem chi tiết thêm!"
       };
       
       transporter.sendMail(mailOptions, function(error, info){
@@ -142,7 +134,9 @@ var functions = {
                 if (!user) {
                     res.status(403).send({success: false, msg: 'Authentication Failed, User not found'})
                 }
-
+                if(user.active=="false"){
+                  res.status(403).send({success: false, msg: 'Authentication Failed, User not found'})
+                }
                 else {
                     user.comparePassword(req.body.password, function (err, isMatch) {
                         if (isMatch && !err) {
@@ -156,6 +150,7 @@ var functions = {
                                     type: user.type,
                                     email: user.email,
                                     name: user.name,
+                                    phone: user.phone,
                                     id: user._id
                                 })
                         }
@@ -204,12 +199,21 @@ var functions = {
                 })
             }
             var OTP = Math.floor(1000 + Math.random() * 9000)
-            const data = {
-                from: 'noreply@hello.com',
-                to: 'huynhthanhnha24111999@gmail.com',
-                subject: 'Hello',
-                text: `OTP: ${OTP}`
-            }
+            var transporter = nodemailer.createTransport({         
+              service: 'gmail',
+              auth: {
+                user: 'huynhthanhnha24111999@gmail.com',
+                pass: '0989354429@#'
+              }
+            });
+            var mailOptions = { 
+              from: 'ManagerPassenger ✔ <huynhthanhnha24111999@gmail.com>',
+              to: req.body.email,
+              subject: 'Welcome to App ManagerPassenger',
+              text: `OTP: ${OTP}`
+            };
+            
+           
     
             return user.updateOne({
                 email: req.body.email
@@ -219,20 +223,18 @@ var functions = {
                         error: 'Forget password failed'
                     })
                 } else {
-                    mg.messages().send(data, function (err, body) {
-                        if (err) {
-                            return res.json({
-                                success: false,
-                                error: err.messages
-                            })
-                        }
-                        return res.json({
-                            success: true,
-                            messages: 'Message has been sent Email',
-                            otp: OTP
-                        })
+                  transporter.sendMail(mailOptions, function(error, info){
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log('Email sent: ' + info.response);
+                      res.json({
+                        success: true,
+                        messages: 'Message has been sent Email',
+                        otp: OTP
                     })
-    
+                    }
+                  });
                 }
             })
         })
@@ -316,7 +318,7 @@ var functions = {
     },
     updateuser: function(req, res){
         var query = { _id: req.body.id}
-        User.findOneAndUpdate(query, { name: req.body.name, phone: req.body.phone, email: req.body.email, type: req.body.type}, {upsert: true}, function(err, doc) {
+        User.findOneAndUpdate(query, { name: req.body.name, phone: req.body.phone, email: req.body.email, type: req.body.type, active: req.body.active}, {upsert: true}, function(err, doc) {
             if (err) return res.send(500, {error: err});
             doc.save(function (err, newPass) {
                 if (err) {
@@ -327,6 +329,21 @@ var functions = {
                 }
                     })
                 })
+    },
+    updateRatingUser: function(req, res){
+      var query = { _id: req.body.id}
+      var review = {"rating": req.body.rating, "description": req.body.description};
+      User.findOneAndUpdate(query,{$push: {review: review}}, {upsert: true}, function(err, doc) {
+          if (err) return res.send(500, {error: err});
+          doc.save(function (err, newPass) {
+              if (err) {
+                  res.json({success: false, msg: 'Failed to save'})
+              }
+              else {
+                  res.json({success: true, msg: 'Successfully saved'})
+              }
+                  })
+              })
     },
     addAddress: function (req, res) {
         if ((!req.body.id) || (!req.body.title) || (!req.body.address)) {
@@ -486,8 +503,17 @@ var functions = {
         }
     },
     updatetourbus: function (req, res) {
-        Tourbus.findByIdAndUpdate( {_id: req.body.id},{locationstart: req.body.locationstart, 
-            locationend: req.body.locationend,time: req.body.time, range: req.body.range, price: req.body.price}, function(err, tourbus){
+        Tourbus.findByIdAndUpdate( {_id: req.body.id},{
+          locationstart: req.body.locationstart, 
+          locationend: req.body.locationend,
+          time: req.body.time, 
+          range: req.body.range, 
+          price: req.body.price,
+          driverid:  req.body.driverid,
+          carid:  req.body.carid,
+          supportid: req.body.supportid,
+          shuttle: req.body.shuttle
+        }, function(err, tourbus){
             if (err) return res.send(500, {error: err});
             if(!tourbus){
                 res.status(403).send({success: false, msg: 'Not found'})
@@ -504,6 +530,28 @@ var functions = {
                         })
             }
         })
+    },
+    updateRatingtourbus: function (req, res) {
+      var review = {"rating": req.body.rating, "description": req.body.description};
+      console.log(review)
+      Tourbus.findByIdAndUpdate( {_id: req.body.id},{$push: {review: review}}, function(err, tourbus){
+          if (err) return res.send(500, {error: err})
+          else if(!tourbus){
+            res.json({success: false, msg: 'Not found'})
+          }
+          else
+          { 
+              console.log(tourbus)
+              tourbus.save(function (err, tourbus) {
+                  if (err) {
+                      res.json({success: false, msg: 'Failed to save'})
+                  }
+                  else {
+                      res.json({success: true, msg: 'Successfully saved'})
+                  }
+                      })
+          }
+      })
     },
     deletetourbus: function (req, res) {
         Tourbus.findByIdAndDelete( {_id: req.body.id}, function(err, tourbus){
@@ -787,6 +835,29 @@ var functions = {
             }
         })
     },
+    updateOrderseat: function (req, res) {
+      Seat.findByIdAndUpdate( {_id: req.body.id},
+          {
+              floors2: req.body.floors2,
+              floors1: req.body.floors1
+          }, function(err, seat){
+          if (err) return res.send(500, {error: err});
+          if(!seat){
+              res.status(403).send({success: false, msg: 'Not found'})
+          }
+          else
+          {
+              seat.save(function (err, seat) {
+                  if (err) {
+                      res.json({success: false, msg: 'Failed to save'})
+                  }
+                  else {
+                      res.json({success: true, msg: 'Successfully saved'})
+                  }
+                      })
+          }
+      })
+    },
     deleteseat: function (req, res) {
         Seat.findByIdAndDelete( {_id: req.body.id}, function(err, seat){
             if(err || !seat){
@@ -819,7 +890,7 @@ var functions = {
         }
     },
     addorder: function (req, res) {
-        if ((!req.body.uid) ||(!req.body.name) || (!req.body.email)||(!req.body.tour) || (!req.body.timetour)||(!req.body.quantity) || (!req.body.seat)||(!req.body.price) || (!req.body.totalprice)) {
+        if ((!req.body.uid) ||(!req.body.name) || (!req.body.email)||(!req.body.tour) || (!req.body.timetour)||(!req.body.quantity) || (!req.body.seat)||(!req.body.price) || (!req.body.totalprice)|| (!req.body.paymentType)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
@@ -870,6 +941,28 @@ var functions = {
             })
         }
     },
+    updateStatusorder: function (req, res) {
+      Order.findByIdAndUpdate( {_id: req.body.id},
+        {
+            status: req.body.status,
+        }, function(err, order){
+        if (err) return res.send(500, {error: err});
+        if(!order){
+            res.status(403).send({success: false, msg: 'Not found'})
+        }
+        else
+        {
+          order.save(function (err, order) {
+                if (err) {
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+                    })
+        }
+    })
+    },
     getorderuser: function (req, res) {
       var id = req.query.id;
       Order.find({uid: id}, function(err, seat){
@@ -902,14 +995,14 @@ var functions = {
         }
     },
     addCar: function (req, res) {
-        if ((!req.body.driverid) || (!req.body.supportid) || (!req.body.tourid) || (!req.body.status)) {
+        if ((!req.body.name) || (!req.body.numberplate) || (!req.body.tourid) || (!req.body.status)) {
             console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
             var newCar = Car({
-                driverid: req.body.driverid,
-                supportid: req.body.supportid,
+                name: req.body.name,
+                numberplate: req.body.numberplate,
                 tourid: req.body.tourid,
                 status: req.body.status,
             })
@@ -958,8 +1051,8 @@ var functions = {
         Car.findByIdAndUpdate( {_id: req.body.id},
             {
                 idtour: req.body.idtour,
-                driverid: req.body.driverid, 
-                supportid: req.body.supportid,
+                name: req.body.name, 
+                numberplate: req.body.numberplate,
                 status: req.body.status
             }, function(err, car){
             if (err) return res.send(500, {error: err});

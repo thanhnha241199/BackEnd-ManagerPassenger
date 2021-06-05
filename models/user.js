@@ -22,9 +22,18 @@ var userSchema = new Schema({
         type: String,
         maxlength: 10
     }, 
+    active: {
+        type: String,
+    },
     type: {
         type: String,
-    }
+    },
+    review: [
+        {
+            rating: {type: String},
+            description: {type: String},
+        }
+    ],
 }, { timestamps:true })
 
 userSchema.pre('save', function (next) {

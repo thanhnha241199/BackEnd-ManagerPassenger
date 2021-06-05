@@ -22,6 +22,8 @@ router.post('/changepassword', actions.changepassword)
 router.post('/updateinfor', actions.updateinfo)
 router.post('/authenticate', actions.authenticate)
 router.get('/getinfo', actions.getinfo)
+router.post('/updateRatingUser', actions.updateRatingUser)
+
 
 //Address
 router.post('/addaddress', actions.addAddress)
@@ -35,6 +37,7 @@ router.post('/addtourbus', actions.addtourbus)
 router.get('/gettourbus', actions.gettourbus)
 router.post('/updateticket', actions.updatetourbus)
 router.post('/deleteticket', actions.deletetourbus)
+router.post('/updateRatingtourbus', actions.updateRatingtourbus)
 
 //Chedule
 router.post('/addschedule', actions.addchedule)
@@ -54,12 +57,14 @@ router.post('/addseat', actions.addseat)
 router.get('/getseat', actions.getseat)
 router.post('/deleteseat', actions.deleteseat)
 router.post('/updateseat', actions.updateseat)
+router.post('/updateOrderseat', actions.updateOrderseat)
 
 //Order
 router.post('/addcard', actions.addcard)
 router.post('/sendmail', actions.sendorder)
 router.post('/deletecard', actions.deletecard)
 router.post('/getcard', actions.getcard)
+router.post('/updateStatusorder', actions.updateStatusorder)
 
 //Order
 router.post('/addorder', actions.addorder)

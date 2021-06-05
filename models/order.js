@@ -38,6 +38,9 @@ var orderSchema = new Schema({
     price: {
         type: String,
     },
+    paymentType: {
+        type: String,
+    },
     totalprice: {
         type: String,
     },

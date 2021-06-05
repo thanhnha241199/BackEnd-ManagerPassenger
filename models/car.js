@@ -2,14 +2,13 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
 var carSchema = new Schema({
-    driverid: {
-        type: String,
-        require: true
-    },
-    supportid: {
+    tourid: {
         type: String
     },
-    tourid: {
+    name: {
+        type: String
+    },
+    numberplate: {
         type: String
     },
     status: {
