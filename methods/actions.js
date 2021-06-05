@@ -61,7 +61,6 @@ var functions = {
     },
     confirm: function (req, res) {
         if ((!req.body.email) || (!req.body.password) || (!req.body.name) || (!req.body.phone)) {
-            console.log(req.body)
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
@@ -69,7 +68,7 @@ var functions = {
                 email: req.body.email
             }, function (err, user) {
                     if (err) throw err
-                    if (user) {
+                    if (!user) {
                         var OTP = Math.floor(1000 + Math.random() * 9000)
                         var transporter = nodemailer.createTransport({
                           service: 'gmail',
