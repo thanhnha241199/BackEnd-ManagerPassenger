@@ -5,6 +5,12 @@ var carSchema = new Schema({
     tourid: {
         type: String
     },
+    driverid: {
+        type: String
+    },
+    supportid: {
+        type: String
+    },
     name: {
         type: String
     },
@@ -12,6 +18,9 @@ var carSchema = new Schema({
         type: String
     },
     status: {
+        type: String
+    },  
+    description: {
         type: String
     },
 }, { timestamps:true })

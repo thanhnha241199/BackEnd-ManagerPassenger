@@ -27,6 +27,9 @@ var tourbusSchema = new Schema({
     }, 
     supportid: {
         type: String,
+    }, 
+    sale: {
+        type: String,
     },
     review: [
         {
